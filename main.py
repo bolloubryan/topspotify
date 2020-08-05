@@ -1,51 +1,49 @@
 import kivy
 from kivy.app import App
-from kivy.uix.label import Label
-from kivy.uix.gridlayout import GridLayout
-from kivy.uix.textinput import TextInput
-from kivy.uix.button import Button
+from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.widget import Widget
+from kivy.lang import Builder
+from kivy.uix.screenmanager import ScreenManager, Screen
 
-#imports from spotipy
 import spotipy
+import time
 from spotipy.oauth2 import SpotifyOAuth
 
-scope = "user-library-read"
+trackinfo=""
 
-sp =spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope,username="cache"))
+def GetTrack():
+		scope = "user-read-currently-playing"
+		sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope,username="cache"))
 
-class MyGrid(GridLayout):
-	def __init__ (self, **kwargs):
-		super(MyGrid, self).__init__(**kwargs)
+		while (True):
+			canexit=5
+			while(canexit >= 0):
+				time.sleep(3)
+				results = sp.current_user_playing_track()
+				currentpos= results["progress_ms"]
+				totaltime= results["item"]["duration_ms"]
+				canexit = ((totaltime-currentpos)/1000)-3
+				
+			trackname= results ["item"]["name"]
+			albumname= results ["item"]["album"]["name"] 
+			artist= results ["item"]["album"]["artists"][0]["name"]
 
-		self.cols = 1
+			trackinfo = "Track: " + trackname + " by " + artist + " -- Album: " + albumname
+			update_label()
 
-		self.inside = GridLayout()
-		self.inside.cols = 2
+class MainWindow(Screen):
+	def update_label(self):
+		self.newsong.text = trackinfo
 
-		self.inside.add_widget(Label(text="FirstName: "))
-		self.name = TextInput (multiline=False)
-		self.inside.add_widget(self.name)
+class WindowManager(ScreenManager):
+	pass		
 
-		self.add_widget(self.inside)
-
-		self.submit = Button(text="submit", font_size=40)
-		self.submit.bind(on_press=self.pressed)
-		self.add_widget(self.submit)
-
-	def pressed(self, instance):
-		results = sp.current_user_saved_tracks()
-		saved="nothing"
-		for idx, item in enumerate(results['items']):
-			track = item['track']
-			saved = idx, track['artists'][0]['name'], " – ", track['name']
-		saved = str(saved)
-		name=self.name.text
-		word = saved
-		self.name.text =word
+kv = Builder.load_file("my.kv")
 
 class MyApp(App):
 	def build(self):
-		return MyGrid()
+		return kv
 
-#if __name__ == "__main__":
-MyApp().run()
+if __name__ == "__main__":
+	MyApp().run()
+	GetTrack()
