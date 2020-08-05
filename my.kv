@@ -1,0 +1,102 @@
+WindowManager:
+	MainWindow:
+
+<MainWindow>:
+	name: "main"
+	newsong: "new"
+
+	GridLayout:
+		cols:1
+
+		Label:
+			text:"Top Spotify Songs"
+			size_hint: 0.6, 0.2
+			pos_hint: {"x":0.2, "top":1}
+
+		GridLayout:
+			cols:3
+
+			Label:
+				text:"1"
+			Label:
+				text:"song name"
+			Button:
+				text:"Place Here"
+
+			Label:
+				text:"2"
+			Label:
+				text:"song name"
+			Button:
+				text:"Place Here"
+
+
+			Label:
+				text:"3"
+			Label:
+				text:"song name"
+			Button:
+				text:"Place Here"
+
+			Label:
+				text:"4"
+			Label:
+				text:"song name"
+			Button:
+				text:"Place Here"
+
+			Label:
+				text:"5"
+			Label:
+				text:"song name"
+			Button:
+				text:"Place Here"
+
+
+			Label:
+				text:"6"
+			Label:
+				text:"song name"
+			Button:
+				text:"Place Here"
+
+			Label:
+				text:"7"
+			Label:
+				text:"song name"
+			Button:
+				text:"Place Here"
+
+			Label:
+				text:"8"
+			Label:
+				text:"song name"
+			Button:
+				text:"Place Here"
+
+
+			Label:
+				text:"9"
+			Label:
+				text:"song name"
+			Button:
+				text:"Place Here"
+
+			Label:
+				text:"10"
+			Label:
+				text:"song name"
+			Button:
+				text:"Place Here"
+
+		GridLayout:
+			cols:2
+			Label:
+				id:"new"
+				text:"Waiting for new song..."
+				size_hint: 0.6, 0.2
+				pos_hint: {"x":0.2, "top":0}
+			Button:
+				text:"Discard"
+				size_hint: 0.6, 0.2
+				pos_hint: {"x":0.2, "top":0}
