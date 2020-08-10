@@ -3,7 +3,7 @@ from _thread import *
 import sys
 from gettrack import * 
 
-server ="192.168.56.1"
+server ="172.31.9.53"
 port = 5555
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
