@@ -3,9 +3,9 @@ import spotipy
 from spotipy import oauth2
 
 PORT_NUMBER = 8080
-SPOTIPY_CLIENT_ID = 'f49b4e460bec4f4ba54aeed004a46e04'
-SPOTIPY_CLIENT_SECRET = 'aa7872b2ae574d71a1fd03139746fb5e'
-SPOTIPY_REDIRECT_URI = 'http://localhost:8080'
+SPOTIPY_CLIENT_ID =
+SPOTIPY_CLIENT_SECRET =
+SPOTIPY_REDIRECT_URI =
 SCOPE = 'user-read-currently-playing'
 CACHE = '.spotipyoauthcache'
 
