@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, intial-scale=1.0">
+	<title>Top Spotify - Logged in</title>
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="stylesheet" href="../static/style.css">
+	<!-- imported the jquery sortable -->
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<link rel="stylesheet" href="/resources/demos/style.css">
+	<style>
+	#sortable { list-style-type: none; margin: 0; padding: 0; width: 40%; }
+	#sortable li { margin: 0 5px 5px 5px; padding: 5px; font-size: 1.2em; height: 1.5em; }
+	html>body #sortable li { height: 5em; line-height: 1em; }
+	.ui-state-highlight { height: 5em; line-height: 1em; }
+	</style>
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script type="text/javascript">
+  		var jQuery_1_12_1 = $.noConflict(true);
+  	</script>
+	<script>
+	jQuery_1_12_1( function() {
+    	jQuery_1_12_1( "#sortable" ).sortable({
+    		placeholder: "ui-state-highlight"
+    	});
+    	jQuery_1_12_1( "#sortable" ).disableSelection();
+    } );
+	</script>
+</head>
+<body>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+	<script type="text/javascript">
+  	var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+	</script>
+	<script type="text/javascript">
+	var intervalID = setInterval(update_values,3000);
+	var counter = 0
+	function myFunction(songlink) {
+	  var listItem = document.createElement("LI");
+	  counter += 1
+	  console.log(counter)
+	  listItem.setAttribute("class","ui-state-default")
+	  listItem.innerHTML = '<iframe id="result'+String(counter)+'" src="'+songlink+'" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>'
+	  // listItem.appendChild(listTag);
+	  document.getElementById("sortable").appendChild(listItem);
+	}
+  	function update_values() {
+        $.getJSON($SCRIPT_ROOT + '/_stuff',
+               
+    	function(data) {
+        $('#result').text(data.result);
+        var currentsong = data.result
+        if (document.getElementById("result").src!==currentsong){
+        	myFunction(currentsong)
+        	document.getElementById("result").src=currentsong;
+        	
+        }
+      	});
+    };
+    
+    function stopTextColor() {
+      clearInterval(intervalID);
+    }
+	</script> 
+
+	<div class="container">
+		<img src="../static/spotlogo.png" alt="My logo with Spotify marks." class="logo">
+		<body onload="update_values();">
+	</div>	
+	<center>
+	<h1>Current Song!</h1>
+	<iframe id="result" src="https://open.spotify.com/embed/track/5gFQbmmNupeEeiK7sG86vc" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+	<h1>Rank These!</h1>
+	<ul id="sortable">
+		<!--<li class="ui-state-default"><iframe id="result" src="https://open.spotify.com/embed/track/5gFQbmmNupeEeiK7sG86vc" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe></li>-->
+		<!--<li class="ui-state-default">Item 2</li>-->
+	</ul>
+	</center>
+
+	<script>
+	</script>
+
+</body>
+</html>
