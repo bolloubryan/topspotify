@@ -1,0 +1,38 @@
+Open Website->
+
+GetCurrentsong flag = true
+
+Set ACTION = CurrentSong
+	OpenCurrentSong()
+
+When user clicks on button:
+	If User Clicks CurrentSong button:
+		Set ACTION = CurrentSong
+	If User Clicks Last50 button:
+		Set ACTION = Last50
+
+If User Clicks CurrentSong button:
+	GetCurrentsong flag = true
+	OpenCurrentSong()
+Elif User Clicks Songshitory button:
+	GetCurrentsong flag = false
+	Last50()
+	
+OpenCurrentSong()
+	if user is playing song
+		requests current playing song and return it
+	else
+		return "Waiting on playback or access token issue"
+
+RequestSonghistory()
+	if user token is working
+		get list of last 50 songs in simple list ["",""]
+	else
+		return "Waiting on playback or access token issue"
+
+QueueNextSongs ()
+	if user token is working
+		get list of last 50 songs in simple list ["",""]
+	else
+		return "Waiting on playback or access token issue"
+_______________________________________________________________
