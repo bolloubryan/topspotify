@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>jQuery UI Sortable - Connect lists</title>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <style>
+  #sortable1, #sortable2 {
+    border: 1px solid #eee;
+    width: 230px;
+    min-height: 20px;
+    list-style-type: none;
+    margin: 0;
+    padding: 5px 0 0 0;
+    margin-right: 10px;
+  }
+  #sortable1 li, #sortable2 li {
+    margin: 0 5px 5px 5px;
+    padding: 5px;
+    font-size: 1.2em;
+    width: 200px;
+  }
+  button {
+    float: right;
+  }
+  </style>
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script type="text/javascript">
+      var jQuery_1_12_1 = $.noConflict(true);
+  </script>
+  <script>
+  jQuery_1_12_1( function() {
+    jQuery_1_12_1( "#sortable1, #sortable2" ).sortable({
+      connectWith: ".connectedSortable"
+    }).disableSelection();
+  } );
+  </script>
+</head>
+<body>
+ 
+<ul id="sortable1">
+  <li class="ui-state-default">Item New <button>Delete</button></li>
+</ul>
+ 
+<ul id="sortable2" class="connectedSortable">
+  <li class="ui-state-default">Item 1 <button>Delete</button></li>
+  <li class="ui-state-default">Item 2 <button>Delete</button></li>
+  <li class="ui-state-default">Item 3 <button>Delete</button></li>
+  <li class="ui-state-default">Item 4 <button>Delete</button></li>
+  <li class="ui-state-default">Item 5 <button>Delete</button></li>
+</ul>
+ 
+
+ 
+</body>
+</html>
