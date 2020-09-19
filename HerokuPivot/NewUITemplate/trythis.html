@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>jQuery UI Sortable - Connect lists</title>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <!--<link rel="stylesheet" href="/resources/demos/style.css">-->
+  <style>
+  #sortable1, #sortable2 {
+    border: 1px solid #eee;
+    width: 230px;
+    min-height: 20px;
+    list-style-type: none;
+    margin: 0;
+    padding: 5px 0 0 0;
+    margin-right: 10px;
+  }
+  #sortable1 li, #sortable2 li {
+    margin: 0 5px 5px 5px;
+    padding: 5px;
+    font-size: 1.2em;
+    width: 200px;
+  }
+  button {
+    float: right;
+  }
+  </style>
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script type="text/javascript">
+      var jQuery_1_12_1 = $.noConflict(true);
+  </script>
+  <script>
+  var listcount = 0
+  jQuery_1_12_1( function() {
+    jQuery_1_12_1( "#sortable1, #sortable2" ).sortable({
+      connectWith: ".connectedSortable",
+      stop: function(event) {
+        listcount = document.getElementById("sortable2").getElementsByTagName("li").length
+        if (listcount>5){
+          var sortlist = document.querySelector('#sortable2');
+          var lastchild = (listcount*2)-1
+          for (i = lastchild-1; i >= 0; i--) {
+            if (sortlist.childNodes[i].nodeType != Node.TEXT_NODE){
+              sortlist.removeChild(sortlist.childNodes[i]);
+              break;
+            }
+          }
+          for (i = lastchild-1; i >= 0; i--) {
+            if (sortlist.childNodes[i].nodeType == Node.TEXT_NODE){
+              sortlist.removeChild(sortlist.childNodes[i]);
+              break;
+            }
+          }
+        }
+      }
+    }).disableSelection();
+  } );
+  function Delete(currentEl){
+  currentEl.parentNode.parentNode.removeChild(currentEl.parentNode);
+  }
+  </script>
+</head>
+<body>
+<button style="float:left" onclick="">Current</button> <button style="float:left" onclick="">History</button> <input type="text" id="max" name="max" value="Max 50 Values">
+
+<ul id="sortable1">
+  <li class="ui-state-default">Item New <button onclick="Delete(this);">Delete</button></li>
+</ul>
+ 
+<ul id="sortable2" class="connectedSortable">
+  <li class="ui-state-default">Item 1 <button onclick="Delete(this);">Delete</button></li>
+  <li class="ui-state-default">Item 2 <button onclick="Delete(this);">Delete</button></li>
+  <li class="ui-state-default">Item 3 <button onclick="Delete(this);">Delete</button></li>
+  <li class="ui-state-default">Item 4 <button onclick="Delete(this);">Delete</button></li>
+  <li class="ui-state-default">Item 5 <button onclick="Delete(this);">Delete</button></li>
+</ul>
+
+<button style="float:left" onclick="">Save</button>
+</body>
+</html>
