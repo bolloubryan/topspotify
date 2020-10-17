@@ -38,7 +38,7 @@ SPOTIFY_API_BASE_URL = "https://api.spotify.com"
 API_VERSION = "v1"
 SPOTIFY_API_URL = "{}/{}".format(SPOTIFY_API_BASE_URL, API_VERSION)
 
-inDEV = False
+inDEV = True
 PORT = 8080
 
 # Server-side Parameters
@@ -53,7 +53,7 @@ if (inDEV):
 
 else :
 	# prod databse
-	app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://pwronuwmvnpceu:f6a306f214ca315c38bb781f108f308a33a8817050167fa4f34588d8c936982c@ec2-54-86-57-171.compute-1.amazonaws.com:5432/d38634uljvehgv'
+	app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://oorkbqrctirjct:3350e21361b3cd144e40d5e930d94ac3aeb04701ce7e92cc211d566dbe55ed02@ec2-34-193-117-204.compute-1.amazonaws.com:5432/d5bok4iiajtmi4'
 	#prod redirect
 	REDIRECT_URI= "http://flaskaspot.herokuapp.com/callback/q"
 	#debugging option for more logs -- OFF
@@ -72,11 +72,13 @@ class userdb(db.Model):
 	userlogin = db.Column(db.String(200), unique = True)
 	songjson = db.Column(db.Text())
 	spotifyid = db.Column(db.String(200), unique = True)
+	queuejson = db.Column(db.Text())#1
 
-	def __init__ (self, userlogin, songjson, spotifyid):
+	def __init__ (self, userlogin, songjson, spotifyid, queuejson): #14
 		self.userlogin = userlogin
 		self.songjson = songjson
 		self.spotifyid = spotifyid
+		self.queuejson = queuejson#2
 
 SCOPE = "user-read-recently-played user-read-currently-playing"
 #SCOPE = "user-read-currently-playing"
@@ -185,26 +187,39 @@ def save():
 	username = request.cookies.get('userID')
 	#print("username="+username)
     # here we want to get the value of the key (i.e. ?key=value)
+	
 	value = request.args.get('key')
+	value2 = request.args.get('key2')#3
+	#print(value)
+	#print(value2)
     #get top10 list in json
 	#top10list = json.loads(value)
+	
 	top10list = value
+	queuelist = value2 #13
+	
 	#print("top 10 list is "+ top10list)
     #print(top10list)
 	#if request.method == 'POST':
+	
 	userlogin = username
 	songjson = top10list
 	spotid = WhoTrack(username)#run the gettrack and get id?
+	queuejson = queuelist#4
+	
 	#if db.session.query(userdb).filter(userdb.userlogin == userlogin).count() == 0:
 	#print(spotifyid)
 	found_user = userdb.query.filter_by(spotifyid=spotid).first()
 	if found_user:
 		#print("user exists")
 		found_user.songjson = songjson
+		found_user.queuejson = queuejson#5
 		db.session.commit()
 	else:
 		#create a new user entry
-		data = userdb(userlogin, songjson,spotid)
+		#data = userdb(userlogin, songjson,spotid) #6
+		data = userdb(userlogin, songjson,spotid,queuejson) #7
+		
 		db.session.add(data)
 		db.session.commit()
 	return value
@@ -218,7 +233,17 @@ def updatetop():
 		return found_user.songjson
 	else:
 		return ("[]")
-	
+
+#8
+@app.route('/updatequeue')
+def updatequeue():
+	username = request.cookies.get('userID')
+	spotid = WhoTrack(username)
+	found_user = userdb.query.filter_by(spotifyid=spotid).first()
+	if found_user:
+		return found_user.queuejson
+	else:
+		return ("[]")
 
 # 		if customer == '' or dealer == '':
 # 			return render_template('index.html', message='Please enter required files')
